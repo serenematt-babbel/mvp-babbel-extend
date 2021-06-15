@@ -1,0 +1,21 @@
+{
+  "name": "MVP Babbel Extend",
+  "description": "Send learned words to Babbel for review",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "collectedWords.html",
+    "default_icon": "icon-babbel.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["popup.js"]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "cookies"
+  ],
+  "host_permissions": ["<all_urls>"]
+}
