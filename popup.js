@@ -1,10 +1,15 @@
-let addToReviewButton = document.getElementById("addToReview");
+const addToReviewButton = document.getElementById("addToReview");
 const COOKIE_NAME_SESSION = '_accounts_babbel_session';
 
 const addToReview = async () => {
   // Temporarily set Babbel domain with uk subdomain. Subdomain to be mapped based on user location.
-  const BABBEL_DOMAIN = 'https://uk.babbel.com';
+  const BABBEL_DOMAIN = 'https://uk.babbel.cn';
   const sessionCookie = await chrome.cookies.get({ url: BABBEL_DOMAIN, name: COOKIE_NAME_SESSION });
+
+  // Checking session cookie for MVP. To be replaced with:
+  // GET https://accounts-elb.babbel.com/en/me.json
+    //  if OK - user has valid session
+    //  if UNAUTHORIZED - user session is invalid
   if (sessionCookie && sessionCookie.value) {
     const newItem = document.getElementById('wordOfTheDay').textContent;
     
@@ -17,6 +22,10 @@ const addToReview = async () => {
     alert(`${newItem} added to Babbel review!`);
     return;
   }
+
+  // Determine the locale based on user's browser language
+  const signInUrl = 'https://accounts.babbel.cn/en_GB/accounts/sign_in';
+  chrome.tabs.create({ url: signInUrl });
 };
 
 // When the button is clicked, call Get session API to check for user session
